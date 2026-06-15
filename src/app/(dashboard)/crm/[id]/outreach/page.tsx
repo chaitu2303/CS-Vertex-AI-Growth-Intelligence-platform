@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Loader2, ArrowLeft, Mail, MessageSquare, Linkedin, Copy, CheckCircle2 } from "lucide-react"
+import { Loader2, ArrowLeft, Mail, MessageSquare, Send, Copy, CheckCircle2 } from "lucide-react"
 
 export default function OutreachEnginePage() {
   const params = useParams()
@@ -137,7 +137,7 @@ export default function OutreachEnginePage() {
               onClick={() => generateMessage("LINKEDIN")}
               disabled={generating}
             >
-              <Linkedin className="mr-2 h-4 w-4" /> LinkedIn Connection
+              <Send className="mr-2 h-4 w-4" /> LinkedIn Connection
             </Button>
           </CardContent>
         </Card>
