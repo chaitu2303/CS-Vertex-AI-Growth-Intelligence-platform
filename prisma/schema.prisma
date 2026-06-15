@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
+}
+
+enum Role {
+  USER
+  ADMIN
+  AGENCY_OWNER
+}
+
+model Workspace {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  users     User[]
+  leads     Lead[]
+}
+
+model Lead {
+  id              String   @id @default(uuid())
+  name            String
+  address         String?
+  city            String?
+  state           String?
+  country         String?
+  phone           String?
+  website         String?
+  category        String?
+  
+  // Google Maps / Public info
+  rating          Float?
+  reviewCount     Int?
+  businessStatus  String?
+  latitude        Float?
+  longitude       Float?
+
+  // Analysis Data
+  hasWebsite      Boolean  @default(false)
+  digitalScore    Float?
+  mobileResponsive Boolean?
+  sslValid        Boolean?
+  speedScore      Float?
+  seoScore        Float?
+
+  // Scoring
+  leadScore       Float?
+  priority        Priority @default(MEDIUM)
+  status          LeadStatus @default(NEW)
+
+  // CRM
+  notes           String?
+  nextFollowUp    DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  workspace       Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId     String
+  
+  competitors     Competitor[]
+  reports         OpportunityReport[]
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  FOLLOW_UP_SCHEDULED
+  INTERESTED
+  PROPOSAL_SENT
+  CLIENT_CONVERTED
+  CLOSED
+}
+
+model Competitor {
+  id          String   @id @default(uuid())
+  name        String
+  website     String?
+  rating      Float?
+  reviewCount Int?
+  
+  lead        Lead     @relation(fields: [leadId], references: [id])
+  leadId      String
+}
+
+model OpportunityReport {
+  id                String   @id @default(uuid())
+  reportData        String   // JSON string
+  createdAt         DateTime @default(now())
+  
+  lead              Lead     @relation(fields: [leadId], references: [id])
+  leadId            String
+}
