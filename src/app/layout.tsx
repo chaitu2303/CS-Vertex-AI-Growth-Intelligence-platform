@@ -14,8 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { ClerkProvider } from "@clerk/nextjs";
+
 export const metadata: Metadata = {
-  title: "CS Vertex Lead Intelligence",
+  title: "CS Vertex AI Growth Intelligence",
   description: "AI-powered lead intelligence and CRM platform for local businesses.",
 };
 
@@ -25,7 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased min-h-screen bg-background text-foreground">
         <ThemeProvider
           attribute="class"
@@ -38,6 +41,7 @@ export default function RootLayout({
           </TooltipProvider>
         </ThemeProvider>
       </body>
-    </html>
+      </html>
+    </ClerkProvider>
   );
 }

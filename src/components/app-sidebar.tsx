@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { BarChart, Building2, Globe, LayoutDashboard, Settings, Users } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
 
 const navItems = [
   {
@@ -74,11 +75,11 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="p-4">
-          <div className="rounded-lg bg-sidebar-accent p-4 text-sidebar-accent-foreground text-sm">
-            <p className="font-medium">Trial Active</p>
-            <p className="text-muted-foreground mt-1">14 days remaining</p>
+        <div className="p-4 flex items-center justify-between">
+          <div className="rounded-lg bg-sidebar-accent px-3 py-1.5 text-sidebar-accent-foreground text-xs font-medium">
+            Pro Plan
           </div>
+          <UserButton afterSignOutUrl="/" />
         </div>
       </SidebarFooter>
     </Sidebar>
