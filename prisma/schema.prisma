@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -62,10 +61,16 @@ model Lead {
   speedScore      Float?
   seoScore        Float?
 
-  // Scoring
+  // Scoring & AI
   leadScore       Float?
+  conversionProbability Float?
+  growthSignal    Float? // Phase 7: Growth Signals Engine
+  opportunityCategories String[] // New field
   priority        Priority @default(MEDIUM)
   status          LeadStatus @default(NEW)
+
+  // Maps ID
+  placeId         String?  @unique // New field
 
   // CRM
   notes           String?
@@ -74,11 +79,34 @@ model Lead {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   
-  workspace       Workspace @relation(fields: [workspaceId], references: [id])
-  workspaceId     String
+  workspace       Workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId     String?
   
   competitors     Competitor[]
   reports         OpportunityReport[]
+  activities      OutreachActivity[]
+}
+
+model OutreachActivity {
+  id           String   @id @default(uuid())
+  type         String   // EMAIL, WHATSAPP, LINKEDIN
+  status       String   // SCHEDULED, SENT, OPENED, REPLIED
+  subject      String?
+  body         String?  @db.Text
+  scheduledFor DateTime?
+  sentAt       DateTime?
+  
+  // Tracking
+  resendId     String?
+  isDelivered  Boolean  @default(false)
+  isOpened     Boolean  @default(false)
+  isClicked    Boolean  @default(false)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  lead         Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId       String
 }
 
 enum Priority {
@@ -90,11 +118,10 @@ enum Priority {
 enum LeadStatus {
   NEW
   CONTACTED
-  FOLLOW_UP_SCHEDULED
   INTERESTED
   PROPOSAL_SENT
-  CLIENT_CONVERTED
-  CLOSED
+  WON
+  LOST
 }
 
 model Competitor {

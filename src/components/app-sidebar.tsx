@@ -77,7 +77,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <div className="p-4 flex items-center justify-between">
           <div className="rounded-lg bg-sidebar-accent px-3 py-1.5 text-sidebar-accent-foreground text-xs font-medium">
-            Pro Plan
+            Admin Access
           </div>
           <UserButton afterSignOutUrl="/" />
         </div>
