@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { getPrisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-
-const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
+    const prisma = getPrisma();
     const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -69,6 +68,7 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
+    const prisma = getPrisma();
     const { userId } = await auth();
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
