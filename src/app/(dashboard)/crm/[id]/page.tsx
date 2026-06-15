@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, ArrowLeft, Globe, Star, MapPin, Phone } from "lucide-react"
+import { Loader2, ArrowLeft, Globe, Star, MapPin, Phone, Mail, MessageSquare, Send } from "lucide-react"
 
 export default function LeadDetailsPage() {
   const params = useParams()
@@ -139,7 +139,7 @@ export default function LeadDetailsPage() {
                   {lead.activities.map((activity: any) => (
                     <div key={activity.id} className="flex gap-4 border-b pb-4 last:border-0 last:pb-0">
                       <div className="mt-1">
-                        {activity.type === "EMAIL" ? <Mail className="h-5 w-5 text-blue-500" /> : activity.type === "LINKEDIN" ? <Linkedin className="h-5 w-5 text-blue-700" /> : <MessageSquare className="h-5 w-5 text-green-500" />}
+                        {activity.type === "EMAIL" ? <Mail className="h-5 w-5 text-blue-500" /> : activity.type === "LINKEDIN" ? <Send className="h-5 w-5 text-blue-700" /> : <MessageSquare className="h-5 w-5 text-green-500" />}
                       </div>
                       <div>
                         <p className="text-sm font-semibold">{activity.subject || `${activity.type} Sent`}</p>
@@ -162,7 +162,7 @@ export default function LeadDetailsPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Status</label>
-                <Select value={status} onValueChange={setStatus}>
+                <Select value={status} onValueChange={(val) => setStatus(val || "")}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>

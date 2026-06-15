@@ -79,7 +79,7 @@ export function AppSidebar() {
           <div className="rounded-lg bg-sidebar-accent px-3 py-1.5 text-sidebar-accent-foreground text-xs font-medium">
             Admin Access
           </div>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </div>
       </SidebarFooter>
     </Sidebar>

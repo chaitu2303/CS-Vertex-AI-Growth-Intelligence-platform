@@ -97,7 +97,7 @@ export default function DiscoveryPage() {
         </div>
         <div className="flex-1 space-y-1">
           <label className="text-sm font-medium">Category</label>
-          <Select value={category} onValueChange={setCategory}>
+          <Select value={category} onValueChange={(val) => setCategory(val || "")}>
             <SelectTrigger>
               <SelectValue placeholder="Select industry" />
             </SelectTrigger>
