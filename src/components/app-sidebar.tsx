@@ -48,13 +48,13 @@ const navItems = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar className="border-r border-white/5 bg-background/50 backdrop-blur-xl">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <span className="font-bold">CS</span>
+        <div className="flex items-center gap-3 px-4 py-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/50 text-primary-foreground ai-glow">
+            <span className="font-bold text-lg">CS</span>
           </div>
-          <span className="font-bold text-lg">Vertex Lead</span>
+          <span className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">Vertex Lead</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
