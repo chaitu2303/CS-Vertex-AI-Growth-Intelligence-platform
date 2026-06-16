@@ -24,7 +24,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri",
+        "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri,places.nationalPhoneNumber,places.internationalPhoneNumber",
       },
       body: JSON.stringify({
         textQuery: query,
@@ -46,6 +46,7 @@ export async function GET(request: Request) {
       address: place.formattedAddress || "No address",
       rating: place.rating || 0,
       reviewCount: place.userRatingCount || 0,
+      phone: place.nationalPhoneNumber || place.internationalPhoneNumber || null,
       hasWebsite: !!place.websiteUri,
       websiteUri: place.websiteUri || null,
     }));

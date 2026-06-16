@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { Search, MapPin, Globe, Star, Loader2 } from "lucide-react"
+import { Search, MapPin, Globe, Star, Loader2, Download } from "lucide-react"
+import * as xlsx from "xlsx"
 
 export default function DiscoveryPage() {
   const [location, setLocation] = useState("")
@@ -50,6 +51,7 @@ export default function DiscoveryPage() {
           placeId: business.id,
           name: business.name,
           address: business.address,
+          phone: business.phone,
           website: business.hasWebsite ? business.websiteUri : null,
           hasWebsite: business.hasWebsite,
           rating: business.rating,
@@ -78,7 +80,28 @@ export default function DiscoveryPage() {
     <div className="flex flex-col gap-6 h-full">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Discovery Engine</h2>
-        <p className="text-muted-foreground">Find local businesses and identify website/SEO opportunities.</p>
+        <div className="flex justify-between items-center mt-2">
+          <p className="text-muted-foreground">Find local businesses and identify website/SEO opportunities.</p>
+          {results.length > 0 && (
+            <Button variant="outline" onClick={() => {
+              const exportData = results.map(r => ({
+                Name: r.name,
+                Address: r.address,
+                Phone: r.phone || "N/A",
+                Rating: r.rating,
+                Reviews: r.reviewCount,
+                Website: r.websiteUri || "No Website"
+              }))
+              const ws = xlsx.utils.json_to_sheet(exportData)
+              const wb = xlsx.utils.book_new()
+              xlsx.utils.book_append_sheet(wb, ws, "Discovery Results")
+              xlsx.writeFile(wb, `Discovery_Results_${location.replace(/\s+/g, '_')}.xlsx`)
+            }}>
+              <Download className="mr-2 h-4 w-4" />
+              Export to Excel
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex gap-4 items-end">
@@ -124,6 +147,7 @@ export default function DiscoveryPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Business Name</TableHead>
+                  <TableHead>Phone</TableHead>
                   <TableHead>Rating</TableHead>
                   <TableHead>Website</TableHead>
                   <TableHead className="text-right">Action</TableHead>
@@ -144,6 +168,9 @@ export default function DiscoveryPage() {
                         <span>{business.name}</span>
                         <span className="text-xs text-muted-foreground">{business.address}</span>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{business.phone || <span className="text-muted-foreground italic">N/A</span>}</span>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center text-sm">

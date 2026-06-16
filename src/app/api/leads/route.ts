@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         website: body.website,
         rating: body.rating,
         reviewCount: body.reviewCount,
+        phone: body.phone,
       },
       create: {
         placeId: body.placeId,
