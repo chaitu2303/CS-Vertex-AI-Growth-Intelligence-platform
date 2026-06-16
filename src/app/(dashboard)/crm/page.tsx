@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Loader2, TrendingUp } from "lucide-react"
+import { Loader2, TrendingUp, Download } from "lucide-react"
+import * as XLSX from "xlsx"
 
 export default function CrmPage() {
   const [leads, setLeads] = useState<any[]>([])
@@ -51,11 +52,34 @@ export default function CrmPage() {
     filteredLeads = filteredLeads.slice(0, 10); // Top 10
   }
 
+  const exportToExcel = () => {
+    const dataToExport = filteredLeads.map(lead => ({
+      BusinessName: lead.name,
+      Address: lead.address,
+      Website: lead.website || "No Website",
+      Priority: lead.priority,
+      Status: lead.status,
+      LeadScore: lead.leadScore,
+      GrowthSignal: lead.growthSignal || 0,
+      ConversionProbability: lead.conversionProbability || 0,
+    }))
+    const ws = XLSX.utils.json_to_sheet(dataToExport)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, "Leads")
+    XLSX.writeFile(wb, "crm_leads_export.xlsx")
+  }
+
   return (
     <div className="flex flex-col gap-6 h-full">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">CRM Dashboard</h2>
-        <p className="text-muted-foreground">Manage your analyzed leads and track outreach progress.</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">CRM Dashboard</h2>
+          <p className="text-muted-foreground">Manage your analyzed leads and track outreach progress.</p>
+        </div>
+        <Button onClick={exportToExcel} className="hidden md:flex gap-2">
+          <Download className="h-4 w-4" />
+          Export to Excel
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">

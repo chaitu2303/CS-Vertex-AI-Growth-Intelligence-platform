@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   try {
     const prisma = getPrisma();
@@ -76,6 +78,7 @@ export async function GET(request: Request) {
 
     const leads = await prisma.lead.findMany({
       orderBy: { createdAt: "desc" },
+      include: { competitors: true }
     });
 
     return NextResponse.json({ leads });
